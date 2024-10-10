@@ -10,7 +10,7 @@ ${START}        QAX
 Start session
     Open Application	http://localhost:4725
     ...                 platformName=Android		
-    ...                 deviceName=Android Emulator
+    ...                 deviceName=Pixel_7_Pro_API_34
     ...                 automationName=UIAutomator2 
     ...                 app=${EXECDIR}/app/yodapp-beta.apk	
     ...                 udid=emulator-5554	
