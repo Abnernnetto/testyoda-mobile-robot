@@ -1,0 +1,17 @@
+{
+  "name": "qax",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Abner Nunes Netto",
+  "license": "ISC",
+  "dependencies": {
+    "appium": "^2.10.3"
+  },
+  "devDependencies": {
+    "appium-uiautomator2-driver": "^3.6.1"
+  }
+}
