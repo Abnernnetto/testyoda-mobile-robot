@@ -54,18 +54,32 @@ jobs:
             appium driver update uiautomator2 || true;  # Atualiza o driver caso já esteja instalado
           fi
 
+      - name: Install Android SDK system image
+        run: |
+          sdkmanager --install "system-images;android-34;google_apis;x86_64"
+
+      - name: Create Android Emulator
+        run: |
+          echo no | avdmanager create avd -n "Pixel_4_XL_API_34" -k "system-images;android-34;google_apis;x86_64" -d pixel_4_xl
+
+      - name: Start Android Emulator
+        run: |
+          nohup emulator -avd Pixel_4_XL_API_34 -no-window -no-audio -gpu off &
+          adb wait-for-device  # Aguarda até que o dispositivo esteja disponível
+          adb shell input keyevent 82  # Desbloqueia a tela do emulador
+
       - name: Start Appium
         run: |
           nohup appium -p 4725 --log-level debug &
-          sleep 10  # Aguarde 10 segundos para garantir que o Appium esteja pronto
+          sleep 30  # Aumenta o tempo de espera para garantir que o Appium esteja pronto e o emulador disponível
 
-      - name: Check Appium server
+      - name: Check connected devices
         run: |
-          curl http://localhost:4725/sessions || exit 1  # Verifica se o servidor Appium está acessível
+          adb devices  # Verifica se o dispositivo está conectado
 
       - name: Run Robot Framework Tests
         run: |
-          robot -d ./reports -v APPIUM_PORT:4725 .
+          robot -d ./reports -v APPIUM_PORT:4725 -v APK_PATH:./yodapp-robot/app/yodapp-beta.apk .
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
