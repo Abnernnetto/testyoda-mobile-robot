@@ -37,6 +37,13 @@ jobs:
             system-images;android-34;google_apis;x86_64
             emulator
 
+      - name: Set ANDROID_HOME and Emulator Path
+        run: |
+          echo "Setting ANDROID_HOME and emulator path"
+          export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+          export PATH=$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/tools/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          sdkmanager --list --add-modules java.se.ee  # Adiciona o JAXB ao Java
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -54,40 +61,18 @@ jobs:
             appium driver update uiautomator2 || true;
           fi
 
-      # Adicionando ANDROID_SDK_ROOT ao ambiente
-      - name: Set ANDROID_HOME and Emulator Path
-        run: |
-          echo "Setting ANDROID_HOME and emulator path"
-          export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
-          export PATH=$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/tools/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          sdkmanager --list  # Verifica se os componentes estão instalados corretamente
-
-      - name: Install Android SDK system image
-        run: |
-          sdkmanager --install "system-images;android-34;google_apis;x86_64"
-
-      - name: Create Android Emulator
-        run: |
-          echo no | avdmanager create avd -n "Pixel_4_XL_API_34" -k "system-images;android-34;google_apis;x86_64" -d pixel_4_xl
-
-      - name: Start Android Emulator
-        run: |
-          nohup emulator -avd Pixel_4_XL_API_34 -no-window -no-audio -gpu off &
-          adb wait-for-device
-          adb shell input keyevent 82  # Desbloqueia a tela do emulador
-
       - name: Start Appium
         run: |
           nohup appium -p 4725 --log-level debug &
-          sleep 30  # Aumenta o tempo de espera para garantir que o Appium esteja pronto e o emulador disponível
+          sleep 10
 
-      - name: Check connected devices
+      - name: Check Appium server
         run: |
-          adb devices  # Verifica se o dispositivo está conectado
+          curl http://localhost:4725/sessions || exit 1
 
       - name: Run Robot Framework Tests
         run: |
-          robot -d ./reports -v APPIUM_PORT:4725 -v APK_PATH:./yodapp-robot/app/yodapp-beta.apk .
+          robot -d ./reports -v APPIUM_PORT:4725 .
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
