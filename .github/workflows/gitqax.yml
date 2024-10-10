@@ -51,8 +51,16 @@ jobs:
           if ! appium driver list --installed | grep uiautomator2; then
             appium driver install uiautomator2 || true;
           else
-            appium driver update uiautomator2 || true;  # Atualiza o driver caso já esteja instalado
+            appium driver update uiautomator2 || true;
           fi
+
+      # Adicionando ANDROID_SDK_ROOT ao ambiente
+      - name: Set ANDROID_HOME and Emulator Path
+        run: |
+          echo "Setting ANDROID_HOME and emulator path"
+          export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+          export PATH=$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/tools/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          sdkmanager --list  # Verifica se os componentes estão instalados corretamente
 
       - name: Install Android SDK system image
         run: |
@@ -65,7 +73,7 @@ jobs:
       - name: Start Android Emulator
         run: |
           nohup emulator -avd Pixel_4_XL_API_34 -no-window -no-audio -gpu off &
-          adb wait-for-device  # Aguarda até que o dispositivo esteja disponível
+          adb wait-for-device
           adb shell input keyevent 82  # Desbloqueia a tela do emulador
 
       - name: Start Appium
