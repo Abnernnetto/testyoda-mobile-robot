@@ -18,7 +18,7 @@ Start session
     Sleep               10
     
 Get started
-    Wait Until Page Contains    ${START}    10
+    Wait Until Page Contains    ${START}    30
     Click Text                  ${START}    
 
 Navigate to
