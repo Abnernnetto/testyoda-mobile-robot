@@ -12,7 +12,7 @@ Start session
     ...                 platformName=Android		
     ...                 deviceName=Pixel_7_Pro_API_34
     ...                 automationName=UIAutomator2 
-    ...                 app=${EXECDIR}/app/yodapp-beta.apk	
+    ...                 app=$/Users/abnernunesnetto/EstudoJavaScript/qax/app/yodapp-beta.apk	
     ...                 udid=emulator-5554	
     ...                 autoGrantPermissions=true
     Sleep               10
