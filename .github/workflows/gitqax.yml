@@ -79,7 +79,7 @@ jobs:
           script: |
             avdmanager list device
             ls -l ./yodapp-robot/app  # Lista o diretório para garantir que o APK está presente
-            robot -d ./reports -v APPIUM_PORT:4725 -v APK_PATH:./yodapp-robot/app/yodapp-beta.apk ./tests
+            robot -d ./reports -v APPIUM_PORT:4725 -v APK_PATH:./qax/app/yodapp-beta.apk ./tests
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
