@@ -21,7 +21,7 @@ Get started
     Wait Until Page Contains    ${START}    30
     Click Text                  ${START}    
 
-Navigate to
+Navegate to
     [Arguments]         ${item_text}
     ${hamburguer}       Set Variable         xpath=//android.widget.ImageButton[@content-desc="Open navigation drawer"]
 

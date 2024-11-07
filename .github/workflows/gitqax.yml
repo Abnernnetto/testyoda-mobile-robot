@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Projeto
+        uses: actions/checkout@v4
 
       - name: Use Python 3.9
         uses: actions/setup-python@v5
@@ -30,12 +31,7 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
-          components: |
-            platform-tools
-            build-tools;34.0.0
-            platforms;android-34
-            system-images;android-34;google_apis;x86_64
-            emulator
+          cmdline-tools-version: 'latest'
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -51,18 +47,13 @@ jobs:
           if ! appium driver list --installed | grep uiautomator2; then
             appium driver install uiautomator2 || true;
           else
-            appium driver update uiautomator2 || true;  # Atualiza o driver caso já esteja instalado
+            appium driver update uiautomator2 || true;
           fi
 
       - name: Start Appium
         run: |
           nohup appium -p 4725 --log-level debug &
-          sleep 10  # Aguarde 10 segundos para garantir que o Appium esteja pronto
-
-      - name: Check Appium server
-        run: |
-          curl http://localhost:4725/sessions || exit 1  # Verifica se o servidor Appium está acessível
-
+          sleep 10
 
       - name: Install Android SDK system image
         run: |
@@ -70,24 +61,25 @@ jobs:
 
       - name: Create Device
         run: |
-          echo no | avdmanager create avd -n "Pixel_7_Pro_API_34" -k "system-images;android-34;google_apis;x86_64" -d pixel_7_pro
+          echo no | avdmanager create avd -n "Pixel_4_XL_API_34" -k "system-images;android-34;google_apis;x86_64" -d pixel_4_xl
 
       - name: Enable KVM group perms
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-
+          
       - name: Run Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
           target: google_apis
           arch: x86_64
-          profile: pixel_6_pro
+          profile: pixel_4_xl
           script: |
             avdmanager list device
-            robot -d ./reports -v APPIUM_PORT:4725 .
+            ls -l ./yodapp-robot/app  # Lista o diretório para garantir que o APK está presente
+            robot -d ./reports -v APPIUM_PORT:4725 -v APK_PATH:./yodapp-robot/app/yodapp-beta.apk ./tests
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -95,4 +87,3 @@ jobs:
         with:
           name: reports
           path: reports
-
