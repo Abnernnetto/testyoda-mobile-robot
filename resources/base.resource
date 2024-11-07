@@ -20,7 +20,7 @@ Start session
     Sleep               15
     
 Get started
-    Wait Until Page Contains    ${START}    15
+    Wait Until Element Is Visible    ${START}    15
     Click Text                  ${START}    
 
 Navegate to
@@ -37,9 +37,9 @@ Navegate to
 
 Go to item
     [Arguments]                     ${item}     ${checkpoint}
-    Wait Until Page Contains        ${item}        15
+    Wait Until Element Is Visible        ${item}        15
     Click Text                      ${item}
-    Wait Until Page Contains        ${checkpoint}          15
+    Wait Until Element Is Visible        ${checkpoint}          15
     
 
 
