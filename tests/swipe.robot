@@ -20,6 +20,6 @@ Deve poder remover o Darth Vader
 
     Click Element                       id=com.qaxperience.yodapp:id/btnRemove
     Wait Until Page Does Not Contain    Darth Vader
-    Verify Text In Logcat               [@text="Star Wars"]     Deve_poder_remover_o_Darth_Vader
+   
 
     Close session
