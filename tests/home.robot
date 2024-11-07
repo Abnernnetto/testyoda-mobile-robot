@@ -12,6 +12,7 @@ Deve abrir a tela principal
     ...                 app=${EXECDIR}/app/yodapp-beta.apk	
     ...                 udid=emulator-5554
     ...                 autoGrantPermissions=true
+    ...                 uiautomator2ServerInstallTimeout=60000
     
 
     Wait Until Page Contains    Yodapp
