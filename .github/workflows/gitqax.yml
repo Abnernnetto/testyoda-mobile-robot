@@ -78,7 +78,7 @@ jobs:
           profile: pixel_4_xl
           script: |
             avdmanager list device
-            ls -l ./yodapp-robot/app  # Lista o diretório para garantir que o APK está presente
+            ls -l ./qax/app  # Lista o diretório para garantir que o APK está presente
             robot -d ./reports -v APPIUM_PORT:4725 -v APK_PATH:./qax/app/yodapp-beta.apk ./tests
 
       - name: Upload test results
