@@ -78,9 +78,10 @@ jobs:
           profile: pixel_6_pro
           script: |
             avdmanager list device
-            robot -d ./reports -v APPIUM_PORT:4725 .
+            robot -d ./logs -v APPIUM_PORT:4725 .
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
         with:
           name: 'relatorio-de-testes'
           path: ./logs
