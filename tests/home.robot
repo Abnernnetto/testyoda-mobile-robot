@@ -5,14 +5,7 @@ Library     AppiumLibrary
 ***Test Cases***
 
 Deve abrir a tela principal
-    Open Application    http://localhost:4725       30
-    ...                 platformName=Android	
-    ...                 deviceName=Android Emulator
-    ...                 automationName=UIAutomator2	
-    ...                 app=${EXECDIR}/app/yodapp-beta.apk	
-    ...                 udid=emulator-5554
-    ...                 autoGrantPermissions=true
-    ...                 uiautomator2ServerInstallTimeout=60000
+    Start session
     
 
     Wait Until Page Contains    Yodapp
